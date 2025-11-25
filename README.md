@@ -11,10 +11,28 @@
 #### Status: In progress
 
 # Overview
+This project implements a fully functional monitoring and response lab environment that demonstates how a SOC environment detects and analyzes threats. This home lab combines log collection, centralized analysis and log aggregation, alerting, ticketing and eventually attack simulation. 
 
+Logs from the Windows and Linux endpoints are shipped to Logstash using Winlogbeat and Filebeat, where they are parsed, enriched and sent to Opensearch, where they are stored and visualised. Detection rules in Opensearch identify suspicious activity from the logs, if suspicious activity is detected by an alert trigger, an alert is created in opensearch, user is alerted in slack (webhook from opensearch), and a ticket creation request is sent to osTicket by using a custom webhook and forwarder API. 
 
 # Architecture
+![Architecture](img/Architecture.png "High level architecture of the SIEM home lab")
+
+# Setting up the environment
+
+# Workflow of the lab
+
 
 # To-Do
+* Add more hosts to monitor and add diversity to the monitored hosts
+* Add more complicated detection rules and alerts
+* Create more realistic attack simulations with Mythic C2
 
-# Skills learned
+# Learning outcomes
+
+* Security monitoring and log analysis using opensearch
+* Detection engineering with monitors and Mustache templates
+* Networking
+* Designing the architecture of a SIEM environment
+* Shell scripting
+* Docker
