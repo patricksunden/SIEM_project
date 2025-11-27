@@ -33,7 +33,7 @@ The idea for this project is not only to present it, but also create easy to imp
 
 
 
-## Detailed workflow of the lab
+## Workflow of the environment
 
 A Beats agent (linux=filebeat, windows=winlogbeat) is installed on all hosts we want to monitor. These agents all send their data to Logstash, which is running on the monitoring host Ubuntu machine. This monitoring Ubuntu hosts Docker, with Opensearch, Logstash and osTicket as containers. Logstash then enriches and sorts the data, sending them to correct indexes in Opensearch-node1, these can then be visualized in opensearch-dashboards.
 
