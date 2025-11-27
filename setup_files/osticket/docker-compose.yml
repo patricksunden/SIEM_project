@@ -1,0 +1,35 @@
+services:
+  osticket:
+    image: devinsolutions/osticket
+    container_name: osticket
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    environment:
+      - MYSQL_HOST=mariadb
+      - MYSQL_DATABASE=osticket
+      - MYSQL_USER=osticket
+      - MYSQL_PASSWORD=osticketpass
+      - INSTALL_SECRET=supersecretinstallkey123
+      - ADMIN_FIRSTNAME=Admin
+      - ADMIN_LASTNAME=User
+      - ADMIN_EMAIL=admin@example.com
+      - ADMIN_USERNAME=ostadmin
+      - ADMIN_PASSWORD=Admin1
+    depends_on:
+      - mariadb
+
+  mariadb:
+    image: mariadb:10.5
+    container_name: osticket_db
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpass
+      - MYSQL_DATABASE=osticket
+      - MYSQL_USER=osticket
+      - MYSQL_PASSWORD=osticketpass
+    volumes:
+      - dbdata:/var/lib/mysql
+
+volumes:
+  dbdata:
