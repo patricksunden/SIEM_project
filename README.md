@@ -66,6 +66,8 @@ This alert is then assigned automatically, and looks like this in osTicket:
 
 ## Setting up the environment
 
+I will be adding some set up scripts after I confirm they work as intended.
+
 ## To-Do
 - [ ] Add more hosts to monitor and add diversity to the monitored hosts
 - [ ] Add more complicated detection rules and alerts
