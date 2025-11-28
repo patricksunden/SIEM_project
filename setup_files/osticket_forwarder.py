@@ -18,7 +18,7 @@ logging.basicConfig(level=logging.INFO)
 
 # turn these into environment variables or config file later
 OSTICKET_URL = 'http://localhost:8081/api/tickets.json'
-OSTICKET_API_KEY = 'ABF0E4E417C8D32BB445C66E835402D7'
+OSTICKET_API_KEY = '<YOUR_OSTICKET_API_KEY>'
 DEFAULT_SUBMITTER_EMAIL = "alerts@opensearch.com"
 DEFAULT_SUBMITTER_NAME = "Automated Alert System"
 DEFAULT_TOPIC_ID = "1"
