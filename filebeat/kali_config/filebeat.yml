@@ -114,7 +114,7 @@ setup.kibana:
   # Scheme and port can be left out and will be set to the default (http and 5601)
   # In case you specify and additional path, the scheme is required: http://localhost:5601/path
   # IPv6 addresses should always be defined as: https://[2001:db8::1]:5601
-  host: "https://192.168.10.166:5601"
+  host: "<YOUR_MONITOR_HOST_IP>:5601"
   ssl.verification_mode: none
   # Kibana Space ID
   # ID of the Kibana Space into which the dashboards should be loaded. By default,
@@ -157,7 +157,7 @@ setup.kibana:
 # ------------------------------ Logstash Output -------------------------------
 output.logstash:
   # The Logstash hosts
-  hosts: ["192.168.10.166:5044"]
+  hosts: ["<YOUR_MONITOR_HOST_IP:5044>"]
 
   # Optional SSL. By default is off.
   # List of root certificates for HTTPS server verifications
