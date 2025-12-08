@@ -34,10 +34,10 @@ The idea for this project is not only to present it, but also create easy to imp
 ## Setting up the environment (🟧 IN PROGRESS)
 
 Clone the full repo and enter the setup folder:
-´´´bash
+```bash
 git clone https://github.com/patricksunden/SIEM_project.git
 cd SIEM_project/setup_files
-´´´
+```
 
 I will be adding some set up scripts after I confirm they work as intended.
 
