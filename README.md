@@ -57,7 +57,7 @@ You should now have in your project root:
 
 #### 3. Start the stack
 From your setup folder, run:
-(Make sure you are using Docker Compose V2 and have docker installed on your machine)
+(Make sure you are using Docker Compose V2 and have docker installed on your machine: https://docs.docker.com/engine/install/ubuntu/)
 ```bash
 sudo docker compose up -d
 ```
@@ -86,6 +86,45 @@ Replace the password when interacting with the cluster if you’ve changed it in
 ---
 
 ### STEP 2 - install Filebeat (or Winlogbeat) on each machine you want to monitor
+
+#### 1. Important note about beats and Logstash
+All variants of beats (Filebeat, Winlogbeat, Metricbeat... ) should send logs to logstash, not directly to OpenSearch.
+This simplifies configuration and allows preprocessing.
+
+#### 2. Download the correct Filebeat version
+We need a specific oss-version of Filebeat for it to be compatible with Opensearch:
+```bash
+curl -o "filebeat-oss-7.17.13-amd64.deb" -X GET "https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-oss-7.17.13-amd64.deb"
+```
+
+#### 3. Install Filebeat
+```bash
+sudo dpkg -i filebeat-oss-7.17.13-amd64.deb
+```
+
+#### 4. Enable Filebeat on system startup
+```bash
+sudo systemctl enable filebeat
+```
+#### 5. Configure Filebeat
+The config file is located at
+```bash
+/etc/filebeat/filebeat.yml
+```
+You must configure the Filebeat -> Logstash output to point to your monitoring VM:
+```yml
+output.logstash:
+  # The Logstash hosts
+  hosts: ["<YOUR_MONITOR_HOST_IP>:5044"]
+```
+There are currently config files for a ubuntu machine and a kali machine. These config files should automatically have other outputs disabled and the input locations where to collect logs should be correct.
+
+#### 6. Start and verify Filebeat
+```bash
+sudo systemctl start filebeat
+sudo systemctl status filebeat
+``` 
+Status should show active (running)
 
 
 I will be adding more set up information after I confirm they work as intended.
