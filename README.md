@@ -26,6 +26,9 @@ Logs from the Windows and Linux endpoints are shipped to Logstash using Winlogbe
 
 The idea for this project is not only to present it, but also create easy to implement instructions for the environment when the project is finished.
 
+To start with this project you need at least two virtual machines, one for monitoring and running the ticketing system, and one for testing. The monitoring virtual machine should have 8 GB of RAM and 4 vCPUs to handle opensearch and logstash. I am using Ubuntu vm as the machine that is hosting the monitoring containers, and a kali machine that is used for testing. These machines could both be Ubuntu VMs, does not really matter. 
+
+Eventually I will implement a third virtual machine that hosts the Mythic containers for offensive actions. 
 ## Architecture
 <p align="center">
   <img src="img/Architecture.png" alt="High level architecture of the SIEM home lab" width="800"/>
@@ -58,10 +61,17 @@ From your setup folder, run:
 ```bash
 sudo docker compose up -d
 ```
+
 This command will start three containers needed for OpenSearch:
 * `opensearch-node1`
 * `logstash`
 * `opensearch-dashboards`
+
+
+Check that the containers are running:
+```bash
+sudo docker ps -a
+```
 
 #### 4. Test OpenSearch connectivity
 
@@ -69,13 +79,16 @@ You can interact with the cluster using curl:
 ```bash
 curl -ku admin:"fzPkTv5b#89aDAB^Jq3J" -X GET "https://localhost:9200/_cat"
 ```
+More information here: https://docs.opensearch.org/latest/getting-started/communicate/
 
-Replace the password if you’ve changed it in docker-compose.yml under the opensearch-dashboards service.
+Replace the password when interacting with the cluster if you’ve changed it in docker-compose.yml.
 
 ---
 
 ### STEP 2 - install Filebeat (or Winlogbeat) on each machine you want to monitor
-I will be adding some set up scripts after I confirm they work as intended.
+
+
+I will be adding more set up information after I confirm they work as intended.
 
 ## Workflow of the environment
 
