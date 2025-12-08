@@ -31,7 +31,15 @@ The idea for this project is not only to present it, but also create easy to imp
   <img src="img/Architecture.png" alt="High level architecture of the SIEM home lab" width="800"/>
 </p>
 
+## Setting up the environment (🟧 IN PROGRESS)
 
+Clone the full repo and enter the setup folder:
+´´´bash
+git clone https://github.com/patricksunden/SIEM_project.git
+cd SIEM_project/setup_files
+´´´
+
+I will be adding some set up scripts after I confirm they work as intended.
 
 ## Workflow of the environment
 
@@ -63,10 +71,6 @@ This alert is then assigned automatically, and looks like this in osTicket:
 <p align="center">
    <img src="img/osTicket.png" alt="A ticket sent to osTicket" width="800"/>
 </p>
-
-## Setting up the environment
-
-I will be adding some set up scripts after I confirm they work as intended.
 
 ## To-Do
 - [ ] Add more hosts to monitor and add diversity to the monitored hosts
