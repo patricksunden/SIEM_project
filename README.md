@@ -33,12 +33,48 @@ The idea for this project is not only to present it, but also create easy to imp
 
 ## Setting up the environment (🟧 IN PROGRESS)
 
-Clone the full repo and enter the setup folder:
+### STEP 1 - Install OpenSearch, Logstash, and OpenSearch Dashboards on the monitoring VM
+
+#### 1. Clone the full repo and enter the setup folder
 ```bash
 git clone https://github.com/patricksunden/SIEM_project.git
 cd SIEM_project/setup_files
 ```
 
+
+#### 2. Prepare the environment
+You should now have in your project root:
+* `docker-compose.yml` (defines containers `opensearch-node1`, `logstash`, and `opensearch-dashboards`)
+* A `logstash` folder containing:
+  - `Dockerfile`
+* A `configs` folder containing:
+  - `logstash.conf`
+  - `logstash.yml`
+* An `opensearch_dashboards.yml` file
+
+#### 3. Start the stack
+From your setup folder, run:
+(Make sure you are using Docker Compose V2 and have docker installed on your machine)
+```bash
+sudo docker compose up -d
+```
+This command will start three containers needed for OpenSearch:
+* `opensearch-node1`
+* `logstash`
+* `opensearch-dashboards`
+
+#### 4. Test OpenSearch connectivity
+
+You can interact with the cluster using curl:
+```bash
+curl -ku admin:"fzPkTv5b#89aDAB^Jq3J" -X GET "https://localhost:9200/_cat"
+```
+
+Replace the password if you’ve changed it in docker-compose.yml under the opensearch-dashboards service.
+
+---
+
+### STEP 2 - install Filebeat (or Winlogbeat) on each machine you want to monitor
 I will be adding some set up scripts after I confirm they work as intended.
 
 ## Workflow of the environment
