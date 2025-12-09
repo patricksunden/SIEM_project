@@ -124,10 +124,23 @@ There are currently config files for a ubuntu machine and a kali machine. These 
 sudo systemctl start filebeat
 sudo systemctl status filebeat
 ``` 
-Status should show active (running)
+Status should show active (running).
+
+You can test if Filebeat can reach the monitoring machine using the command:
+```bash
+sudo filebeat test output
+```
+If everything works, the result should look like this:
+<p align="left">
+   <img src="img/filebeat_test.png" alt="Successful Filebeat test output" width="300"/>
+</p>
+
+If Filebeat fails to start up, you can view the reason in Filebeat logs using the command:
+```bash
+sudo journalctl -u filebeat -n 50 --no-pager
+```
 
 
-I will be adding more set up information after I confirm they work as intended.
 
 ## Workflow of the environment
 
