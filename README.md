@@ -140,7 +140,65 @@ If Filebeat fails to start up, you can view the reason in Filebeat logs using th
 sudo journalctl -u filebeat -n 50 --no-pager
 ```
 
+#### 7. Verify logs in OpenSearch Dashboard:
+   - Go to Management -> Index Management -> Indexes, look for indexes starting with `filebeat*`.
+   - Create an index pattern in Management -> Dashboards Management -> Index Patterns, set `filebeat*` to aggregate all Filebeat logs.
+   - Go to OpenSearch Dashboards -> Discover to view logs.
 
+### STEP 3 - Install osTicket and Python Ticket Forwarder Flask App
+
+#### 1. Install Python and pip:
+```bash
+sudo apt update
+sudo apt install python3 python3-pip -y
+```
+
+#### 2. Install Python venv and dependencies:
+```bash
+sudo apt install python3-venv -y
+python3 -m venv venv
+source venv/bin/activate
+pip3 install -r requirements.txt
+```
+
+#### 3. Give the forwarder execution permission:
+```bash
+chmod +x start_forwarder.sh
+```
+You can start the forwarder now by running
+```bash
+./start_forwarder.sh
+``` 
+in the `setup_files`-folder. However you don't need to run it yet since we need to change the API key inside the app.
+
+#### 4. Install the osTicket container
+
+In the osticket folder, run:
+```bash
+sudo docker compose up
+```
+
+#### 5. Access the osTicket admin page
+* Located at `http://localhost:8081/scp` (default credentials `ostadmin:Admin1`)
+  * Port 8081 is used since there will be overlap with Mythic, default would be 8080
+ 
+#### 6. Create an API key in osTicket
+
+* Go to Admin panel -> Manage -> API. Add a source IP address (usually the Docker network gateway for osTicket and osTicket_db)
+* Get the Docker network gateway address for osTicket with the command:
+```bash
+sudo docker network inspect osticket_default | grep Gateway
+```
+* Add this gateway address as a source IP to create the API. This api key needs to be inserted as a value for the variable `OSTICKET_API_KEY` in `osticket_forwarder.py`
+Now you can start the app by running `./start_forwarder` in the `setup_files`-folder.
+
+#### 7. Create a custom webhook in OpenSearch
+* Navigate to Management -> Notifications -> Create channel
+* Use channel type `Custom Webhook` with url `http://<YOUR_VM_IP_HERE>:5000/osticket`
+* This will connect the webhook with the correct endpoint in the custom ticket forwarder.
+
+
+### STEP 4 - Creating alert flow
 
 ## Workflow of the environment
 
