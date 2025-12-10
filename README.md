@@ -200,6 +200,80 @@ Now you can start the app by running `./start_forwarder` in the `setup_files`-fo
 
 ### STEP 4 - Creating alert flow
 
+Example: SSH brute-force detector
+
+* The monitor runs a query every minute to find matching documents.
+
+Below you can find the required information to make your first monitor, trigger and action.
+
+Example query:
+```json
+{
+  "size": 0,
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "journald.process.name": {
+              "query": "sshd-session"
+            }
+          }
+        },
+        {
+          "match_phrase": {
+            "message": {
+              "query": "Failed password"
+            }
+          }
+        },
+        {
+          "range": {
+            "@timestamp": {
+              "from": "now-5m",
+              "to": "now"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "aggregations": {
+    "by_ip": {
+      "terms": {
+        "field": "source.ip.keyword",
+        "size": 20
+      }
+    }
+  }
+}
+```
+Example trigger:
+```painless
+for (ip in ctx.results[0].aggregations.by_ip.buckets) {
+  if (ip.doc_count > 5) {
+    return true;
+  }
+}
+return false;
+```
+
+Osticket action message:
+```json
+{
+  "title": "{{ctx.monitor.name}} - {{ctx.trigger.name}}",
+  "severity": "{{ctx.trigger.severity}}",
+  "monitor_id": "{{ctx.monitor.id}}",
+  "trigger_id": "{{ctx.trigger.actions.name}}",
+  "host": "{{ctx.results.0.hits.hits.0._source.host.hostname}}",
+  "timestamp": "{{ctx.results.0.hits.hits.0._source.@timestamp}}",
+  "message": "{{ctx.results.0.hits.hits.0._source.message}}",
+  "source_ip": "{{ctx.results.0.hits.hits.0._source.host.ip.0}}"
+}
+```
+
+In a nutshell, the monitor gathers data every x minutes, the trigger condition creates the alert in opensearch, and runs the actions related to the trigger (user alerting and ticket forwarding).
+
 ## Workflow of the environment
 
 A Beats agent (linux=filebeat, windows=winlogbeat) is installed on all hosts we want to monitor. These agents all send their data to Logstash, which is running on the monitoring host Ubuntu machine. This monitoring Ubuntu hosts Docker, with Opensearch, Logstash and osTicket as containers. Logstash then enriches and sorts the data, sending them to correct indexes in Opensearch-node1, these can then be visualized in opensearch-dashboards.
